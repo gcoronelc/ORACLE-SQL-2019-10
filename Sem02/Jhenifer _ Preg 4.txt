@@ -1,0 +1,6 @@
+Select * 
+From ventas.producto
+
+-- Código de Linea Blanca= 501
+
+Where IDCAT = 501 and PRECIO >1000;

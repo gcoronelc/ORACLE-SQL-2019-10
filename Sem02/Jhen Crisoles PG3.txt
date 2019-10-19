@@ -1,0 +1,3 @@
+Select *
+From EDUCA.CURSO
+Where CUR_MATRICULADOS=0;

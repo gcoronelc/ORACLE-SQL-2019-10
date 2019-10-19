@@ -1,0 +1,7 @@
+/*5. Desarrollar una sentencia SELECT para consultar los empleados que su salario en
+mayor a 3000.00. Esquema RECURSOS.*/
+
+
+SELECT *
+FROM RECURSOS.EMPLEADO
+WHERE SUELDO > 3000;

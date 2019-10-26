@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CONSULTAR CLIENTES</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>CONSULTAR CLIENTES</h1>
+    <form id="form1">
+      <table>
+        <tr>
+          <td>PATERNO</td>
+          <td>MATERNO</td>
+          <td>NOMBRE</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td><input type="text" name="paterno" /></td>
+          <td><input type="text" name="materno" /></td>
+          <td><input type="text" name="nombre" /></td>
+          <td><input type="button" id="btnConsultar" value="Consultar"/></td>
+        </tr>
+      </table>
+    </form>
+    <div id="divResultado"></div>
+    <script>
+      
+      $("#btnConsultar").click(function(){
+        var divResultado = $("#divResultado");
+        showEsperaAjax(divResultado);       
+        var data = $("#form1").serialize();
+        $.get("TraerClientes",data,function(response){
+          
+          if( response.codigo == 1){
+            var arregloObjetos = jQuery.parseJSON(response.mensaje);
+            mostrarTablaDesdeJson(arregloObjetos, divResultado, "idTabla")
+          }
+
+        });
+      });
+      
+    </script>
+  </body>
+</html>

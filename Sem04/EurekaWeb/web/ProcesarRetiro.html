@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PROCESO RETIRO</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>PROCESO RETIRO</h1>
+        <form id="form1">
+            <div>
+                <label>Cuenta:</label>
+                <input type="text" id="txtCuenta" name="cuenta" />
+                <label id="lblSaldo">[Saldo]</label>
+            </div>
+            <div>
+                <label>Importe:</label>
+                <input type="text" name="importe" />
+            </div>
+            <div>
+                <label>Clave:</label>
+                <input type="password" name="clave" />
+            </div>
+            <div>
+                <input type="button" id="btnProcesar" value="Procesar" />
+            </div>
+        </form>
+        <div id="divMensaje"></div>
+        <script>
+
+            $("#btnProcesar").click(function () {
+                var divMensaje = $("#divMensaje");
+                showEsperaAjax(divMensaje);
+                var data = $("#form1").serialize();
+                $.post("ProcRetiro", data, function (response) {
+
+                    if (response.codigo == 1) {
+                        $("#form1")[0].reset();
+                        divMensaje.html("<p style='color:blue;'>" + response.mensaje + "</p>");
+                    } else {
+                        divMensaje.html("<p style='color:red;'>" + response.mensaje + "</p>");
+                    }
+
+                });
+            });
+
+
+            $("#txtCuenta").keyup(function () {
+                var lblSaldo = $("#lblSaldo");
+                lblSaldo.html("");
+                var cuenta = $("#txtCuenta").val();
+                var data = "cuenta=" + cuenta;
+                $.post("TraerSaldo", data, function (response) {
+                    if (response.codigo == 1) {
+                        lblSaldo.html(response.mensaje);
+                    }
+                });
+            });
+
+        </script>
+    </body>
+</html>

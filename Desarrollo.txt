@@ -15,8 +15,8 @@ clase 02
 
 clase 03
 ========================================
-1.- 
-2.- 
+1.- Aplicando Grupos
+2.- Consultas multitablas
 3.- 
 4.- 
 5.- 

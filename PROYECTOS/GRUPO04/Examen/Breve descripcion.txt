@@ -1,0 +1,23 @@
+-------------------------------------------------------
+--EXAMEN
+--ALUMNO: Osorio Urrunaga
+--PROFESOR: Ing. Eric Gustavo Coronel Castillo
+-------------------------------------------------------
+Se modelará el caso de un negocio de venta de ropa, según el modelo relacional. 
+El diagrama entidad - relación se adjunta a este proyecto para más detalles. 
+
+Se han considerado las siguientes entidades:
+-Proveedores
+-Empleados
+-Lineas
+-Productos
+-Clientes
+-Compras
+-DetalleCompra
+-Ventas
+-DetalleVenta
+
+Se adjuntan también los scripts de creación de la BD y la carga de algunos
+valores.
+
+

@@ -1,0 +1,314 @@
+-------------------------------------------------------
+--LAB 1 - SOLUCIONES
+--ALUMNO: Osorio Urrunaga
+--PROFESOR: Ing. Eric Gustavo Coronel Castillo
+-------------------------------------------------------
+
+-------------------------------------------------------
+--SELECCION DE COLUMNAS
+-------------------------------------------------------
+
+--EJERCICIO 1
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, EMAIL
+FROM RECURSOS.EMPLEADO;
+
+--EJERCICIO 2
+SELECT ALU_ID, ALU_NOMBRE, ALU_DIRECCION, ALU_EMAIL
+FROM EDUCA.ALUMNO;
+
+--EJERCICIO 3
+SELECT CUR_ID, CUR_NOMBRE, CUR_PRECIO, CUR_PROFESOR
+FROM EDUCA.CURSO;
+
+--EJERCICIO 4
+SELECT IDDEPARTAMENTO, NOMBRE
+FROM RECURSOS.DEPARTAMENTO;
+
+--EJERCICIO 5
+SELECT CUR_NOMBRE, CUR_VACANTES, CUR_PRECIO
+FROM EDUCA.CURSO;
+
+-------------------------------------------------------
+--CAMPOS CALCULADOS
+-------------------------------------------------------
+
+--EJERCICIO 6
+SELECT CUR_ID, CUR_NOMBRE, CUR_MATRICULADOS, CUR_VACANTES, ROUND(CUR_MATRICULADOS/CUR_VACANTES*100,2) "PORCENTAJE MATRICULADOS"
+FROM EDUCA.CURSO;
+
+--EJERCICIO 7
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, NOMBRE || ', ' || APELLIDO "NOMBRE COMPLETO"
+FROM RECURSOS.EMPLEADO;
+
+--EJERCICIO 8
+SELECT CUR_ID, CUR_NOMBRE, CUR_VACANTES, CUR_PRECIO, CUR_VACANTES*CUR_PRECIO "IMPORTE TOTAL"
+FROM EDUCA.CURSO;
+
+--EJERCICIO 9
+SELECT IDPROD, NOMBRE, PRECIO, STOCK, PRECIO*STOCK "IMPORTE"
+FROM VENTAS.PRODUCTO;
+
+--EJERCICIO 10
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, SUELDO, SUELDO*1.15 "SALARIO PROYECTADO"
+FROM RECURSOS.EMPLEADO;
+
+-------------------------------------------------------
+--OPERADORES DE COMPARACIÓN
+-------------------------------------------------------
+
+--EJERCICIO 1
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, FECINGRESO
+FROM RECURSOS.EMPLEADO
+WHERE EXTRACT(YEAR FROM FECINGRESO) = 2003 AND EXTRACT(MONTH FROM FECINGRESO) <=3;
+
+--EJERCICIO 2
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO
+FROM RECURSOS.EMPLEADO
+WHERE IDDEPARTAMENTO = 101;
+
+--OTRA SOLUCION
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO
+FROM RECURSOS.EMPLEADO
+WHERE IDDEPARTAMENTO = (SELECT
+IDDEPARTAMENTO 
+FROM RECURSOS.DEPARTAMENTO
+WHERE NOMBRE = 'Contabilidad');
+
+--EJERCICIO 3
+SELECT *
+FROM EDUCA.CURSO
+WHERE CUR_MATRICULADOS = 0;
+
+--EJERCICIO 4
+SELECT IDPROD, NOMBRE, PRECIO, STOCK
+FROM VENTAS.PRODUCTO
+WHERE PRECIO > 50;
+
+--EJERCICIO 5
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE SUELDO > 3000.00;
+
+-------------------------------------------------------
+--OPERADORES LÓGICOS
+-------------------------------------------------------
+
+--EJERCICIO 1
+SELECT *
+FROM RECURSOS.EMPLEADO
+WHERE 3500.00 < SUELDO AND SUELDO <10000.00;
+
+--EJERCICIO 2
+SELECT *
+FROM RECURSOS.EMPLEADO
+WHERE 10000.00 < SUELDO AND
+IDDEPARTAMENTO = (SELECT
+IDDEPARTAMENTO 
+FROM RECURSOS.DEPARTAMENTO
+WHERE NOMBRE = 'Contabilidad');
+
+--EJERCICIO 3
+SELECT *
+FROM RECURSOS.EMPLEADO
+WHERE UPPER(NOMBRE) LIKE UPPER('_o%')
+OR UPPER(NOMBRE) LIKE UPPER('_a%');
+
+--EJERCICIO 4
+SELECT *
+FROM VENTAS.PRODUCTO
+WHERE IDCAT = (
+SELECT IDCAT 
+FROM VENTAS.CATEGORIA
+WHERE NOMBRE = 'LINEA BLANCA'
+) AND PRECIO > 1000;
+
+--EJERCICIO 5
+--Id Ventas = 103
+--Id Recursos Humanos = 106
+
+SELECT *
+FROM RECURSOS.EMPLEADO
+WHERE IDDEPARTAMENTO = 103 OR IDDEPARTAMENTO = 106;
+
+--EJERCICIO 6
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE SUBSTR(UPPER(NOMBRE), 2, 1) IN ('A', 'O', 'I');
+
+-------------------------------------------------------
+--OPERADORES LIKE, BETWEEN, IN, IS NULL
+-------------------------------------------------------
+
+--EJERCICIO 7
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE UPPER(NOMBRE) LIKE '%E_';
+
+--EJERCICIO 8
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE UPPER(NOMBRE) LIKE '%O';
+
+--EJERCICIO 9
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE SUBSTR(UPPER(APELLIDO), 2, 1) IN ('A', 'O');
+
+--EJERCICIO 10
+SELECT *
+FROM RECURSOS.EMPLEADO
+WHERE SUELDO BETWEEN 3000 AND 10000
+ORDER BY SUELDO;
+
+--EJERCICIO 11
+
+--Id Ventas = 103
+--Id Recursos Humanos = 106
+--Id Contabilidad = 101
+
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE IDDEPARTAMENTO IN (101, 103, 106);
+
+--EJERCICIO 12
+SELECT IDEMPLEADO, NOMBRE, APELLIDO, IDDEPARTAMENTO, SUELDO
+FROM RECURSOS.EMPLEADO
+WHERE COMISION IS NULL OR COMISION = 0;
+
+-------------------------------------------------------
+--ORDENAMIENTO DEL CONJUNTO DE RESULTADOS
+-------------------------------------------------------
+
+--EJERCICIO 13
+SELECT *
+FROM RECURSOS.EMPLEADO
+ORDER BY FECINGRESO;
+
+--EJERCICIO 14
+SELECT *
+FROM VENTAS.PRODUCTO
+ORDER BY
+IDCAT,
+PRECIO;
+
+-------------------------------------------------------
+--MANIPULACIÓN DE VALORES NULL
+-------------------------------------------------------
+
+--EJERCICIO 15
+SELECT *
+FROM EDUCA.CURSO
+WHERE CUR_PROFESOR IS NULL;
+
+--EJERCICIO 16
+SELECT e.*, SUELDO + NVL(COMISION,0) "INGRESO TOTAL"
+FROM RECURSOS.EMPLEADO e;
+
+--EJERCICIO 17
+SELECT e.*, SUELDO + NVL(COMISION,0) "INGRESO TOTAL"
+FROM RECURSOS.EMPLEADO e
+WHERE SUELDO + NVL(COMISION,0) < 8000;
+
+--EJERCICIO 18
+SELECT e.*, SUELDO + NVL(COMISION,0) "INGRESO TOTAL"
+FROM RECURSOS.EMPLEADO e
+WHERE SUELDO + NVL(COMISION,0) > 3500;
+
+-------------------------------------------------------
+--FUNCIONES DE FECHA Y HORA
+-------------------------------------------------------
+
+--EJERCICIO 20
+SELECT *
+FROM SCOTT.EMP
+WHERE EXTRACT(MONTH FROM HIREDATE) IN 1;
+
+--EJERCICIO 21
+SELECT *
+FROM EDUCA.MATRICULA
+WHERE EXTRACT(MONTH FROM MAT_FECHA) IN 10;
+
+-------------------------------------------------------
+-------------------------------------------------------
+--LAB 3 - SOLUCIONES
+--ALUMNO: Osorio Urrunaga
+--PROFESOR: Ing. Eric Gustavo Coronel Castillo
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+--CONSULTAS MULTITABLAS
+-------------------------------------------------------
+
+--EJERCICIO 1
+/* Desarrolle una sentencia SELECT para obtener un listado que incluya el nombre del
+curso con sus respectivos nombres de alumnos. Base de datos EDUCA.*/
+
+SELECT c.cur_nombre, a.alu_nombre 
+FROM educa.alumno a
+JOIN educa.matricula m ON a.alu_id = m.alu_id
+JOIN educa.curso c ON c.cur_id = m.cur_id
+ORDER BY 1;
+
+
+--EJERCICIO 2
+/* Desarrolle una sentencia SELECT que muestre el nombre del alumno y la suma de
+todos sus pagos. Base de datos EDUCA.*/
+
+SELECT  a.alu_nombre, SUM(p.pag_importe) PAGO_TOTAL
+FROM educa.alumno a
+JOIN educa.pago p ON a.alu_id = p.alu_id
+GROUP BY  a.alu_nombre
+ORDER BY 1;
+
+
+--EJERCICIO 3
+/* Desarrolle una sentencia SELECT que muestre el nombre del curso y el importe de
+todos sus pagos. Base de datos EDUCA.*/
+
+SELECT c.cur_nombre, SUM(p.pag_importe)
+FROM EDUCA.curso c
+JOIN EDUCA.pago p ON c.cur_id = p.cur_id
+GROUP BY c.cur_nombre
+ORDER BY 1;
+
+
+--EJERCICIO 4
+/* Desarrolle una sentencia SELECT que muestre el nombre del departamento y el
+importe de su planilla. Base de datos RH.*/
+
+SELECT d.nombre DEPARTAMENTO, SUM(e.sueldo) IMPORTE
+FROM RECURSOS.departamento d
+JOIN RECURSOS.empleado e ON d.iddepartamento = e.iddepartamento
+GROUP BY d.nombre;
+
+
+--EJERCICIO 5
+/* Desarrolle una sentencia SELECT para encontrar la cantidad de trabajadores en cada
+ciudad. Base de datos RH.*/
+
+SELECT u.ciudad, COUNT(*) NUMERO_TRABAJADORES 
+FROM recursos.empleado e
+JOIN recursos.departamento d ON e.iddepartamento = d.iddepartamento
+JOIN recursos.ubicacion u ON d.idubicacion = u.idubicacion
+GROUP BY u.ciudad;
+
+
+--EJERCICIO 6
+/*Desarrolle una sentencia SELECT para obtener un listado de todos los departamentos
+y la cantidad de trabajadores en cada uno de ellos. Base de datos RH.*/
+
+SELECT d.nombre DEPARTAMENTO, COUNT(e.idempleado) EMPLEADOS
+FROM recursos.departamento d
+LEFT JOIN recursos.empleado e ON d.iddepartamento = e.iddepartamento
+GROUP BY d.nombre;
+
+
+--EJERCICIO 7
+/* Desarrolle una sentencia SELECT para encontrar la cantidad de alumnos matriculados
+en cada curso, debe incluir en el listado todos los cursos. Base de datos EDUCA.*/
+
+SELECT c.cur_nombre CURSO, COUNT(a.alu_id) MATRICULADOS
+FROM EDUCA.curso c
+LEFT JOIN EDUCA.matricula m ON c.cur_id = m.cur_id
+LEFT JOIN EDUCA.alumno a ON m.alu_id = a.alu_id
+GROUP BY c.cur_nombre;
